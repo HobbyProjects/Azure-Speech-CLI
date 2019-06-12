@@ -59,15 +59,24 @@ namespace SpeechCLI.Commands
             [Option(Description = "Custom properties of this endpoint. Format: '--properties prop1=val1;prop2=val2;prop3=val3'")]
             string Properties { get; set; }
 
-
             int OnExecute(CommandLineApplication app)
             {
+                List<ModelIdentity> modelProperty;
+                if (string.IsNullOrWhiteSpace(AcousticModel))
+                {
+                    modelProperty = new List<ModelIdentity>() { new ModelIdentity(Guid.Parse(LanguageModel)) };
+                }
+                else
+                {
+                    modelProperty = new List<ModelIdentity>() { new ModelIdentity(Guid.Parse(AcousticModel)), new ModelIdentity(Guid.Parse(LanguageModel)) };
+                }
+
                 var endpointDefinition = new EndpointDefinition()
                 {
                     Name = Name,
                     Description = Description,
                     Locale = Locale ?? "en-us",
-                    ModelsProperty = new List<ModelIdentity>() { new ModelIdentity(Guid.Parse(AcousticModel)), new ModelIdentity(Guid.Parse(LanguageModel)) },
+                    ModelsProperty = modelProperty,
                     ConcurrentRecognitions = ConcurrentRecognitions ?? 1,
                     ContentLoggingEnabled = ContentLogging ?? true,
                     Properties = SplitProperties(Properties),
