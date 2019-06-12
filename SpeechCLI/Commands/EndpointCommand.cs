@@ -39,7 +39,6 @@ namespace SpeechCLI.Commands
 
             [Option(LongName = "model", ShortName = "m", ValueName = "GUID", Description = "(Required) ID of the acoustic model. Run 'speech model list' to see your models.")]
             [Guid]
-            [Required]
             string AcousticModel { get; set; }
 
             [Option(ShortName = "lm", ValueName = "GUID", Description = "(Required) ID of the lanuage model. Run 'speech model list' to see your models.")]
